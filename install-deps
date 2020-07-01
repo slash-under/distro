@@ -194,16 +194,26 @@ elif [[ "$(uname)" == 'Linux' ]]; then
                 libgraphicsmagick1-dev libfftw3-dev sox libsox-dev \
                 libsox-fmt-all
         fi
+        if [[ $ubuntu_major_version -ge '20' ]]; then
+	    sudo -E add-apt-repository ppa:rock-core/qt4
+        fi
 
         if sudo apt-get update ; then
             echo "Updated successfully."
         else
             echo "Some portion of the update is failed"
         fi
-        sudo apt-get install -y build-essential gcc g++ curl \
-            cmake libreadline-dev git-core libqt4-dev libjpeg-dev \
-            libpng-dev ncurses-dev imagemagick libzmq3-dev gfortran \
-            unzip gnuplot gnuplot-x11 ipython
+        if [[ $ubuntu_major_version -lt '20' ]]; then
+            sudo apt-get install -y build-essential gcc g++ curl \
+                 cmake libreadline-dev git-core libqt4-dev libjpeg-dev \
+                 libpng-dev ncurses-dev imagemagick libzmq3-dev gfortran \
+                 unzip gnuplot gnuplot-x11 ipython
+        else
+            sudo apt-get install -y build-essential gcc g++ curl \
+                 cmake libreadline-dev git-core libqt4-dev libjpeg-dev \
+                 libpng-dev ncurses-dev imagemagick libzmq3-dev gfortran \
+                 unzip gnuplot gnuplot-x11
+        fi
 
         gcc_major_version=$(gcc --version | grep ^gcc | awk '{print $4}' | \
                             cut -c 1)
